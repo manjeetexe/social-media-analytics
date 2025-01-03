@@ -8,6 +8,13 @@ const SubmitEngagement = () => {
     const [message, setMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const resetForm = () => {
+        setPostType('');
+        setLikes(0);
+        setShares(0);
+        setComments(0);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -19,11 +26,16 @@ const SubmitEngagement = () => {
                 body: JSON.stringify({ postType, likes, shares, comments }),
             });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
             const data = await response.json();
-            setMessage(data.message || 'Error saving data');
+            setMessage(data.message || 'Post saved successfully');
+            resetForm();
         } catch (error) {
             console.error('Error:', error);
-            setMessage('Error saving data');
+            setMessage('Error saving data. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -49,7 +61,7 @@ const SubmitEngagement = () => {
                         <input
                             type="number"
                             value={likes}
-                            onChange={(e) => setLikes(e.target.value)}
+                            onChange={(e) => setLikes(Math.max(0, e.target.value))}
                             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -59,7 +71,7 @@ const SubmitEngagement = () => {
                         <input
                             type="number"
                             value={shares}
-                            onChange={(e) => setShares(e.target.value)}
+                            onChange={(e) => setShares(Math.max(0, e.target.value))}
                             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -69,7 +81,7 @@ const SubmitEngagement = () => {
                         <input
                             type="number"
                             value={comments}
-                            onChange={(e) => setComments(e.target.value)}
+                            onChange={(e) => setComments(Math.max(0, e.target.value))}
                             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                             required
                         />
