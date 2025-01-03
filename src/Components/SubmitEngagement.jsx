@@ -41,19 +41,28 @@ const SubmitEngagement = () => {
         }
     };
 
+    const handleNumberChange = (setter) => (e) => {
+        const value = Math.max(0, parseInt(e.target.value, 10));
+        setter(isNaN(value) ? 0 : value);
+    };
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4 text-center">Submit Engagement Data</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Post Type</label>
-                    <input
-                        type="text"
+                    <select
                         value={postType}
                         onChange={(e) => setPostType(e.target.value)}
                         className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                         required
-                    />
+                    >
+                        <option value="">Select Post Type</option>
+                        <option value="carousel">Carousel</option>
+                        <option value="reels">Reels</option>
+                        <option value="static">Static Image</option>
+                    </select>
                 </div>
                 <div className="mb-4 grid grid-cols-3 gap-4">
                     <div>
@@ -61,7 +70,7 @@ const SubmitEngagement = () => {
                         <input
                             type="number"
                             value={likes}
-                            onChange={(e) => setLikes(Math.max(0, e.target.value))}
+                            onChange={handleNumberChange(setLikes)}
                             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -71,7 +80,7 @@ const SubmitEngagement = () => {
                         <input
                             type="number"
                             value={shares}
-                            onChange={(e) => setShares(Math.max(0, e.target.value))}
+                            onChange={handleNumberChange(setShares)}
                             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -81,7 +90,7 @@ const SubmitEngagement = () => {
                         <input
                             type="number"
                             value={comments}
-                            onChange={(e) => setComments(Math.max(0, e.target.value))}
+                            onChange={handleNumberChange(setComments)}
                             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                             required
                         />
