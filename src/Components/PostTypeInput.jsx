@@ -31,7 +31,7 @@ const AnalyzePost = () => {
 
             const data = await response.json();
             const result = JSON.parse(data.outputs?.[0].outputs?.[0].results.message.text);
-            console.log("Response outputs", result); 
+            
 
             
             setAverageMetrics(result["Average Metrics"]);
