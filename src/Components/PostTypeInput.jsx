@@ -1,46 +1,48 @@
 import React, { useState } from 'react';
 
-// Helper function to format numbers
+
 const formatNumber = (num) => {
     if (num >= 1000000) {
         return (num / 1000000).toFixed(1) + 'M';
     } else if (num >= 1000) {
         return (num / 1000).toFixed(1) + 'K';
     } else {
-        return num; // For numbers less than 1000
+        return num; 
     }
 };
 
 const AnalyzePost = () => {
     const [postType, setPostType] = useState('');
     const [insights, setInsights] = useState('');
-    const [averageMetrics, setAverageMetrics] = useState(null); // Store average metrics
-    const [comparativeInsights, setComparativeInsights] = useState(null); // Store comparative insights
+    const [averageMetrics, setAverageMetrics] = useState(null); 
+    const [comparativeInsights, setComparativeInsights] = useState(null); 
     const [isLoading, setIsLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     const fetchInsights = async () => {
         setIsLoading(true);
+        setSuccessMessage('');  
         try {
             const response = await fetch('http://localhost:8000/run-model', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ postType }), // Send postType to backend
+                body: JSON.stringify({ postType }),
             });
 
             const data = await response.json();
             const result = JSON.parse(data.outputs?.[0].outputs?.[0].results.message.text);
-            console.log("Response outputs", result); // Log the received data
+            console.log("Response outputs", result); 
 
-            // Set average metrics
+            
             setAverageMetrics(result["Average Metrics"]);
             
-            // Set comparative insights
+           
             setComparativeInsights(result["Comparative Insights"]);
 
             if (response.ok) {
-                setInsights(result["Comparative Insights"] ? result["Comparative Insights"].join('\n') : 'No insights available.');
+                setSuccessMessage('Data successfully fetched!');
             } else {
-                setInsights('No insights available. Try again.');
+                setInsights('No Data available. Try again.');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -77,6 +79,13 @@ const AnalyzePost = () => {
                 </button>
             </div>
 
+            {/* Success message */}
+            {successMessage && (
+                <div className="mt-6 p-4 bg-green-100 text-green-800 rounded-lg">
+                    <p>{successMessage}</p>
+                </div>
+            )}
+
             {averageMetrics && (
                 <div className="mt-6 p-6 bg-white rounded-lg shadow-md">
                     <h3 className="text-xl font-semibold text-gray-800 mb-4">Average Metrics</h3>
@@ -108,7 +117,11 @@ const AnalyzePost = () => {
                 </div>
             )}
 
-           
+            {insights && (
+                <div className="mt-6 text-center">
+                    <p className="text-green-600 text-lg">{insights}</p>
+                </div>
+            )}
         </div>
     );
 };
