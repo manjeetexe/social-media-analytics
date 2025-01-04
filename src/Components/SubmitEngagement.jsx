@@ -20,7 +20,7 @@ const SubmitEngagement = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:8000/api/save-post', {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/save-post`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ postType, likes, shares, comments }),

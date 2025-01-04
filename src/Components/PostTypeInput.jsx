@@ -23,7 +23,7 @@ const AnalyzePost = () => {
         setIsLoading(true);
         setSuccessMessage('');  
         try {
-            const response = await fetch('http://localhost:8000/run-model', {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/run-model`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ postType }),
