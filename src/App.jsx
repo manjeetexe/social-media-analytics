@@ -15,6 +15,7 @@ const App = () => {
                         <Link to="/analyze-post" className="text-blue-500 hover:underline mx-4">Analyze Post</Link>
                     </nav>
                 </header>
+                
                 <div className="max-w-3xl mx-auto">
                     <Routes>
                         <Route path="/" element={<h2 className="text-xl text-center">Choose an option above to get started.</h2>} />
