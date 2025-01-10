@@ -39,6 +39,7 @@ const AnalyzePost = () => {
             const result = data.outputs?.[0].outputs?.[0]?.results?.message?.text;
              // Log the entire result to check structure
                 const parsedResult = JSON.parse(result)
+                console.log(parsedResult)
             
 
             setAverageMetrics(parsedResult["Average Metrics"] || 'N/A');
@@ -47,7 +48,7 @@ const AnalyzePost = () => {
             if (comparativeInsights && comparativeInsights.length > 0) {
                 setComparativeInsights(comparativeInsights);
             } else {
-                setComparativeInsights(['No insights available.']);
+                setComparativeInsights(['No Data available.']);
             }
     
             setSuccessMessage('Data successfully fetched!');
